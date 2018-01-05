@@ -1,9 +1,4 @@
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Dimension;
-import java.awt.Color;
-import java.awt.RenderingHints;
-
+import java.awt.*;
 import javax.swing.*;
 
 public class AlgoFrame extends JFrame{
@@ -20,11 +15,12 @@ public class AlgoFrame extends JFrame{
 
         AlgoCanvas canvas = new AlgoCanvas();
         setContentPane(canvas);
-        pack();
+
+        setResizable(false);
+        pack();    // 在setResizable(false)后进行pack()，防止在Windows下系统修改frame的尺寸
+        // 具体参见：http://coding.imooc.com/learn/questiondetail/26420.html
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-
         setVisible(true);
     }
 
@@ -35,12 +31,11 @@ public class AlgoFrame extends JFrame{
 
     public int getCanvasWidth(){return canvasWidth;}
     public int getCanvasHeight(){return canvasHeight;}
-    //public JPanel getCanvas(){return canvas;}
 
-    // data
-    private Circle[] circles;
-    public void render(Circle[] circles){
-        this.circles = circles;
+    // TODO: 设置自己的数据
+    private int[] money;
+    public void render(int[] money){
+        this.money = money;
         repaint();
     }
 
@@ -65,13 +60,11 @@ public class AlgoFrame extends JFrame{
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            AlgoVisHelper.setStrokeWidth(g2d,1);
-            AlgoVisHelper.setColor(g2d, Color.RED);
-            for(Circle circle: circles)
-                if(circle.isFilled)
-                    AlgoVisHelper.fillCircle(g2d, circle.x, circle.y, circle.getR());
-                else
-                    AlgoVisHelper.strokeCircle(g2d, circle.x, circle.y, circle.getR());
+            // TODO： 绘制自己的数据data
+            AlgoVisHelper.setColor(g2d, AlgoVisHelper.Blue);
+            int w = canvasWidth / money.length;
+            for(int i = 0 ; i < money.length ; i++)
+                AlgoVisHelper.fillRectangle(g2d, i*w+1, canvasHeight-money[i], w-1, money[i]);
         }
 
         @Override

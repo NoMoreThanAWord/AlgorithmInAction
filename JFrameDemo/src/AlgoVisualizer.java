@@ -6,28 +6,25 @@ import java.awt.event.MouseEvent;
 
 public class AlgoVisualizer {
 
-    private Circle[] circles;
-    private AlgoFrame frame;
-    private boolean isAnimated = true;
+    // TODO: 创建自己的数据
+    private static int Delay = 1;
+    private int[] money;        // 数据
+    private AlgoFrame frame;    // 视图
 
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, int N){
+    public AlgoVisualizer(int sceneWidth, int sceneHeight){
 
         // 初始化数据
-        circles = new Circle[N];
-        int R = 50;
-        for(int i = 0 ; i < N ; i ++){
-            int x = (int)(Math.random()*(sceneWidth-2*R)) + R;
-            int y = (int)(Math.random()*(sceneHeight-2*R)) + R;
-            int vx = (int)(Math.random()*11) - 5;
-            int vy = (int)(Math.random()*11) - 5;
-            circles[i] = new Circle(x, y, R, vx, vy);
-        }
+        // TODO: 初始化数据
+        money = new int[100];
+        for(int i = 0 ; i < money.length ; i++)
+            money[i] = 100;
 
         // 初始化视图
         EventQueue.invokeLater(() -> {
             frame = new AlgoFrame("Welcome", sceneWidth, sceneHeight);
-            frame.addKeyListener(new AlgoKeyListener());
-            frame.addMouseListener(new AlgoMouseListener());
+            // TODO: 根据情况决定是否加入键盘鼠标事件监听器
+//            frame.addKeyListener(new AlgoKeyListener());
+//            frame.addMouseListener(new AlgoMouseListener());
             new Thread(() -> {
                 run();
             }).start();
@@ -37,48 +34,31 @@ public class AlgoVisualizer {
     // 动画逻辑
     private void run(){
 
+        // TODO: 编写自己的动画逻辑
         while(true){
-            // 绘制数据
-            frame.render(circles);
-            AlgoVisHelper.pause(20);
-
-            // 更新数据
-            if(isAnimated)
-                for(Circle circle : circles)
-                    circle.move(0, 0, frame.getCanvasWidth(), frame.getCanvasHeight());
+            frame.render(money);
+            AlgoVisHelper.pause(Delay);
+            for(int i = 0 ; i < money.length ; i++){
+                if(money[i] > 0){
+                    int j = (int)(Math.random() * money.length);
+                    money[i] -= 1;
+                    money[j] += 1;
+                }
+            }
         }
+
     }
 
-    private class AlgoKeyListener extends KeyAdapter{
-
-        @Override
-        public void keyReleased(KeyEvent event){
-            if(event.getKeyChar() == ' ')
-                isAnimated = !isAnimated;
-        }
-    }
-
-    private class AlgoMouseListener extends MouseAdapter{
-
-        @Override
-        public void mousePressed(MouseEvent event){
-
-            //System.out.println(event.getPoint());
-            event.translatePoint(0,
-                    -(frame.getBounds().height - frame.getCanvasHeight()));
-
-            for(Circle circle : circles)
-                if(circle.contain(event.getPoint()))
-                    circle.isFilled = !circle.isFilled;
-        }
-    }
+//    // TODO: 根据情况决定是否实现键盘鼠标等交互事件监听器类
+//    private class AlgoKeyListener extends KeyAdapter{ }
+//    private class AlgoMouseListener extends MouseAdapter{ }
 
     public static void main(String[] args) {
 
-        int sceneWidth = 800;
+        int sceneWidth = 1000;
         int sceneHeight = 800;
-        int N = 10;
 
-        AlgoVisualizer visualizer = new AlgoVisualizer(sceneWidth, sceneHeight, N);
+        // TODO: 根据需要设置其他参数，初始化visualizer
+        AlgoVisualizer visualizer = new AlgoVisualizer(sceneWidth, sceneHeight);
     }
 }
