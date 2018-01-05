@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class AlgoVisualizer {
 
-    // TODO: 创建自己的数据
+    // TODO: 创建自己的数据oo
     private static int Delay = 20;
     private int[] money;        // 数据
     private AlgoFrame frame;    // 视图
