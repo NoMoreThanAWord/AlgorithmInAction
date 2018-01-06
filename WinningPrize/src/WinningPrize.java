@@ -1,3 +1,4 @@
+//中奖概率问题
 public class WinningPrize {
     private double chance;
     private int playTime;
