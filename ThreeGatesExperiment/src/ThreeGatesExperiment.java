@@ -1,3 +1,4 @@
+//三门问题
 public class ThreeGatesExperiment {
     private int N;
     public ThreeGatesExperiment(int N){
