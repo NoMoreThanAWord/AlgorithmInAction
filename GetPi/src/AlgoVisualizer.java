@@ -6,8 +6,7 @@ import java.util.LinkedList;
 public class AlgoVisualizer {
 
     // TODO: 创建自己的数据
-    private Circle circle;
-    private LinkedList<Point> points;
+    private PiData data;
     private int N;
     private static int Delay = 40;
     private AlgoFrame frame;    // 视图
@@ -18,8 +17,8 @@ public class AlgoVisualizer {
             throw new IllegalArgumentException("this demo must in a squre window!");
         // 初始化数据
         // TODO: 初始化数据
-        circle = new Circle(sceneWidth/2, sceneHeight/2, sceneWidth/2);
-        points = new LinkedList<Point>();
+        Circle circle = new Circle(sceneWidth/2, sceneHeight/2, sceneWidth/2);
+        data = new PiData(circle);
         this.N = N;
         // 初始化视图
         EventQueue.invokeLater(() -> {
@@ -38,12 +37,16 @@ public class AlgoVisualizer {
 
         // TODO: 编写自己的动画逻辑
         for(int i = 0 ; i < N ; i++){
-            frame.render(circle, points);
-            AlgoVisHelper.pause(Delay);
+            if(i % 100 == 0){
+                frame.render(data);
+                AlgoVisHelper.pause(Delay);
+                System.out.println(data.estimatePi());
+            }
+
+
             int x = (int)(Math.random()*frame.getCanvasWidth());
             int y = (int)(Math.random()*frame.getCanvasHeight());
-            Point p = new Point(x, y);
-            points.add(p);
+            data.addPoint(new Point(x, y));
         }
 
 
@@ -57,7 +60,7 @@ public class AlgoVisualizer {
 
         int sceneWidth = 800;
         int sceneHeight = 800;
-        int N = 10000;
+        int N = 100000;
 
         // TODO: 根据需要设置其他参数，初始化visualizer
         AlgoVisualizer visualizer = new AlgoVisualizer(sceneWidth, sceneHeight, N);
